@@ -1,0 +1,31 @@
+services:
+  app:
+    image: ankitydv22/node-mongo-app:latest
+    container_name: node-mongo-app
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - MONGO_URI=${MONGO_URI}
+    depends_on:
+      - mongodb
+    networks:
+      - app-network
+    env_file:
+      - .env
+
+  mongodb:
+    image: mongo
+    container_name: mongodb
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    ports:
+      - "27017:27017"
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
